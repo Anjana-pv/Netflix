@@ -8,9 +8,11 @@ import '../../home/custom_widget.dart';
 
 class EveryonceWaching extends StatelessWidget {
   const EveryonceWaching({
-    super.key, 
+    super.key,  required this.snapshot,
+    required this.index,
   });
-
+  final AsyncSnapshot snapshot;
+  final int index;
   @override
   Widget build(BuildContext context) {
     return   Column(
@@ -18,23 +20,23 @@ class EveryonceWaching extends StatelessWidget {
       children: [
         kheight,
         Text(
-          'Friends',
-          style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold,),
+          '${snapshot.data![index].title}',
+          style: const TextStyle( fontSize: 20, fontWeight: FontWeight.bold,),
         ),
         kwith,
         knewHi,
         Text(
-          'One Piece" is a wildly popular and long-running Japanese manga and anime series created by Eiichiro Oda. The story follows Monkey D. Luffy, a young pirate with the ability to stretch his body like rubber after eating a Devil Fruit. Luffy sets out on an adventurous journey to find the ultimate treasure known as "One Piece" and become the Pirate King',
-          style: TextStyle(
+            '${snapshot.data![index].overview}',
+          style: const TextStyle(
             color: Colors.grey,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         ),
-        VideoWidget(),
+        VideoWidget(snapshot: snapshot, index :index,),
         kheight,
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Custombutton(

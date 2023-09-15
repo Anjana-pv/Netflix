@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newtwo/models/contence.dart';
-
 import '../../application/core/colors.dart';
-import '../../application/core/constant.dart';
 import 'custom_widget.dart';
 
 class Backgroungcard extends StatelessWidget {

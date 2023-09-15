@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:newtwo/models/contence.dart';
 import 'package:newtwo/models/movies.dart';
-import 'package:newtwo/presentation/search/searching.dart';
+import 'package:newtwo/models/search.dart';
 import 'package:newtwo/models/tv_series.dart';
 import 'package:http/http.dart'as http; 
 
@@ -21,7 +21,7 @@ class Api {
       'https://api.themoviedb.org/3/tv/top_rated?api_key=${Constant.apikey}';
   static const popularTvSeriesUrl =
       'https://api.themoviedb.org/3/tv/popular?api_key=${Constant.apikey}';
-
+     
   Future<List<Movie>> getTrending() async {
     final response = await http.get(Uri.parse(_trendingUrl));
 
@@ -86,18 +86,19 @@ class Api {
   
 
 Future<List<SearchMovie>> search(value) async { 
-  final searchsUrl = 'https://api.themoviedb.org/3/search/movie?query=$value&include_adult=false&language=en-US&api_key=${Constant.apikey}';
+  final searchsUrl = 'https://api.themoviedb.org/3/search/movie?query=$value&include_adult=false&language=en-US&page=1&api_key=${Constant.apikey}';
 
   final response = await http.get(Uri.parse(searchsUrl));
   if (response.statusCode == 200) {
     final decodedData = json.decode(response.body)['results'] as List;
     return decodedData
-        .map((movie) => SearchMovie.fromJson(movie))
+        .map((movie) => SearchMovie.fromJson(movie)) 
        
-        .where((movie) => movie.posterPath != null && movie.posterPath.isNotEmpty)
+        .where((movie) => movie.posterPath.isNotEmpty)
         .toList();
   } else {
     throw Exception('Something Happened');
   }
 }
+
 }

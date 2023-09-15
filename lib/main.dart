@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:newtwo/application/core/colors.dart';
 import 'package:newtwo/presentation/mainpage.dart/widgets/screen_mainpage.dart';
 
 void main() {

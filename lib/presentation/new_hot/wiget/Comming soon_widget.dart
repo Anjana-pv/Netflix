@@ -1,22 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newtwo/application/core/colors.dart';
-
+import 'package:intl/intl.dart';
 import '../../../application/core/constant.dart';
 import '../../../media/video_wiget.dart';
+
 import '../../home/custom_widget.dart';
 
-class Comingsoonwidget extends StatelessWidget {
-  const Comingsoonwidget({
-    super.key, 
+class ComingsoonWidget extends StatelessWidget {
+  const ComingsoonWidget({
+    super.key,
+    required this.snapshot,
+    required this.index,
   });
-    
+  final AsyncSnapshot snapshot;
+  final int index;
   @override
   Widget build(BuildContext context) {
+    String date = '${snapshot.data![index].releaseDate}';
+    List<String> dateParts = date.split('-');
+    final DateTime dateSplit = DateTime.parse(date);
+    final month = DateFormat('MMM').format(dateSplit);
+    final day = DateFormat('EEEE').format(dateSplit);
     Size size = MediaQuery.of(context).size;
+    
     return Row(
       children: [
-        const SizedBox(
+        SizedBox(
           height: 490,
           width: 50,
           child: Column(
@@ -24,16 +34,19 @@ class Comingsoonwidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "FEB",
-                style: TextStyle(
+                month,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
                 ),
               ),
               Text(
-                "11",
-                style: TextStyle(color:kWhitecolors, fontSize: 30, fontWeight: FontWeight.bold),
+                dateParts[2].toString(),
+                style: const TextStyle(
+                    color: kWhitecolors,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
               )
             ],
           ),
@@ -44,21 +57,22 @@ class Comingsoonwidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              VideoWidget(),
+              VideoWidget(
+                snapshot: snapshot, index: index,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    
-                    'O   N   E      P   E  A   C    E',
-                    style: TextStyle(
-                      color: kWhitecolors,
+                    '${snapshot.data![index].title}',
+                    style: const TextStyle(
+                        color: kWhitecolors,
                         fontSize: 25,
                         letterSpacing: -5,
                         fontWeight: FontWeight.bold),
                   ),
-                  Spacer(),
-                  Row(
+                  const Spacer(),
+                  const Row(
                     children: [
                       Custombutton(
                         icon: Icons.alarm,
@@ -79,21 +93,23 @@ class Comingsoonwidget extends StatelessWidget {
                 ],
               ),
               knewHi,
-          Text('Coming on Friday',style: TextStyle(color: kWhitecolors),),
-              kwith,
-              
-              kheight,
-               Text(
-                'One Peace',
-                style: TextStyle(fontWeight: FontWeight.bold,color: kWhitecolors),
+              Text(
+                'Coming on $day',
+                style: TextStyle(color: kWhitecolors),
               ),
               kwith,
+
+              kheight,
+              //  Text(
+
+              //   style: TextStyle(fontWeight: FontWeight.bold,color: kWhitecolors),
+              // ),
+              kwith,
               knewHi,
-               Text(
-                'One Piece" is a wildly popular and long-running Japanese manga and anime series created by Eiichiro Oda. The story follows Monkey D. Luffy, a young pirate with the ability to stretch his body like rubber after eating a Devil Fruit. Luffy sets out on an adventurous journey to find the ultimate treasure known as "One Piece" and become the Pirate King',
+              Text(
+                '${snapshot.data![index].overview}',
                 style: TextStyle(
                   color: Colors.grey,
-                  
                 ),
               ),
             ],
@@ -103,4 +119,3 @@ class Comingsoonwidget extends StatelessWidget {
     );
   }
 }
-

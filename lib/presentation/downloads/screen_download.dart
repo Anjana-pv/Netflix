@@ -8,7 +8,7 @@ import 'package:newtwo/models/movies.dart';
 import '../widgets/appbar_widget.dart';
 
 class ScreenDownloads extends StatefulWidget {
-  ScreenDownloads({
+  const ScreenDownloads({
     super.key,
   });
 
@@ -27,7 +27,7 @@ late Future<List<Movie>> trandingMovies;
 class _ScreenDownloadsState extends State<ScreenDownloads> {
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
     trandingMovies = Api().getTrending();
   }
@@ -120,6 +120,7 @@ class _SmartDownload extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class Section2 extends StatelessWidget {
   Section2({super.key, required this.trandingMovies});
   Future<List<Movie>> trandingMovies;
@@ -150,7 +151,7 @@ class Section2 extends StatelessWidget {
         SizedBox(
           width: size.width,
           height: size.width,
-          // color: Colors.white,
+          
           child: Stack(
             alignment: Alignment.center,
             children: [

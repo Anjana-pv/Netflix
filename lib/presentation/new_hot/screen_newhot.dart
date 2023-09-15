@@ -3,15 +3,33 @@ import 'package:flutter/material.dart';
 
 import 'package:newtwo/application/core/colors.dart';
 
-import 'package:newtwo/presentation/new_hot/wiget/Comming%20soon_widget.dart';
+
+
+import 'package:newtwo/presentation/new_hot/wiget/comming%20soon_widget.dart';
 import 'package:newtwo/presentation/new_hot/wiget/every_ones.dart';
 
 import '../../application/core/constant.dart';
+import '../../models/api.dart';
+import '../../models/movies.dart';
+import '../../models/tv_series.dart';
 
 
-class ScreeNewHot extends StatelessWidget {
+class ScreeNewHot extends StatefulWidget {
   const ScreeNewHot({Key? key}) : super(key: key);
-   
+
+  @override
+  State<ScreeNewHot> createState() => _ScreeNewHotState();
+}
+late Future<List<Movie>>  nowPlayingMovies;
+late Future<List<TvSeries>> popularSeries;
+class _ScreeNewHotState extends State<ScreeNewHot> {
+  @override
+   void initState() {
+    super.initState();
+    nowPlayingMovies = Api().getnowPlayingMovies();
+    popularSeries = Api().getpopularSeries();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -19,7 +37,7 @@ class ScreeNewHot extends StatelessWidget {
       child: Scaffold(
           appBar: PreferredSize(
             
-            preferredSize:  Size.fromHeight(90),
+            preferredSize:  const Size.fromHeight(90),
             
             child: AppBar(
               backgroundColor: Colors.black,
@@ -45,7 +63,7 @@ class ScreeNewHot extends StatelessWidget {
 
 
 
-                  color: Color.fromARGB(255, 169, 37, 37),
+                  color: const Color.fromARGB(255, 169, 37, 37),
                 ),
                 kwith,
               ],
@@ -75,26 +93,64 @@ class ScreeNewHot extends StatelessWidget {
           
           body: TabBarView(
             children: [
-              _buildcomingsoon(),
-              _buildEveryoneswatching(),
+              SizedBox(
+                child: FutureBuilder(
+                  future: nowPlayingMovies,
+                  builder:(context,snapshot ){
+                   if(snapshot.hasError){
+                    return Center(
+                      child:Text(snapshot.error.toString()),
+                    );
+                   }
+                   else if(snapshot.hasData){
+                    return _buildcomingsoon(snapshot);
+                   }
+                   else{
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                   }
+                  }
+                ),
+              ),
+              SizedBox(
+                child: FutureBuilder(
+                  
+                future:nowPlayingMovies,
+                builder:(context,snapshot){
+                  if(snapshot.hasError){
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+                  }
+                  else if (snapshot.hasData){
+                   return _buildEveryoneswatching(snapshot);
+                  }else{
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }
+              )
+              )
             ],
           )),
     );
   }
- 
-  Widget _buildcomingsoon() {
+
+  Widget _buildcomingsoon(AsyncSnapshot<List<Movie>> snapshot) {
     return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (BuildContext context, index) => const Comingsoonwidget(),
+      itemCount: snapshot.data!.length,
+      itemBuilder: (BuildContext context, index) => ComingsoonWidget(snapshot: snapshot, index: index),
     );
   }
 
-  Widget _buildEveryoneswatching() {
+  Widget _buildEveryoneswatching(AsyncSnapshot<List<Movie>> snapshot) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: snapshot.data!.length,
       itemBuilder:(
         BuildContext context,index)=>
-        const EveryonceWaching(),
+         EveryonceWaching(snapshot: snapshot, index: index),
         ) ;
   }
 }

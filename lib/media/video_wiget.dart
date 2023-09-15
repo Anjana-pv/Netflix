@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:newtwo/models/contence.dart';
 
 import '../application/core/constant.dart';
 
 class VideoWidget extends StatelessWidget {
-  const VideoWidget({
-    super.key,
+  const VideoWidget( {
+    super.key, required this.snapshot, required this.index,
   });
-
+  final AsyncSnapshot snapshot;
+  final int index;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -14,7 +16,8 @@ class VideoWidget extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           height: 200,
-          child: Image.network(tempimg, fit: BoxFit.cover),
+          child: Image.network('${Constant.imagepath}${snapshot.data![index].backDropPath}',
+           ),
         ),
         Positioned(
           bottom: 10,

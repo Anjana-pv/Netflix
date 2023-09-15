@@ -2,14 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newtwo/application/core/colors.dart';
 import 'package:newtwo/application/core/constant.dart';
+import 'package:newtwo/models/contence.dart';
 import 'package:newtwo/presentation/search/widget/titile.dart';
 
 const imageurl =
     "https://www.themoviedb.org/t/p/w220_and_h330_face/3QfQYECgu6DX5UUWCBvv1Fl0BAJ.jpg";
 
 class ScreenSearch extends StatelessWidget {
-  const ScreenSearch({super.key});
-
+  const ScreenSearch({super.key, required this.snapshot});
+   final AsyncSnapshot snapshot;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +21,7 @@ class ScreenSearch extends StatelessWidget {
         Expanded(
           child: ListView.separated(
             shrinkWrap: true,
-            itemBuilder: (ctx, indes) => const TopSearchTile(),
+            itemBuilder: (ctx, index) =>  TopSearchTile(index: index,snapshot: snapshot),
             separatorBuilder: (ctx, index) => knewHi,
             itemCount: 20,
           ),
@@ -33,8 +34,9 @@ class ScreenSearch extends StatelessWidget {
 
 
 class TopSearchTile extends StatelessWidget {
-  const TopSearchTile({super.key});
-
+  const TopSearchTile({super.key, required this.snapshot, required this.index});
+   final AsyncSnapshot snapshot;
+   final int index;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -44,10 +46,10 @@ class TopSearchTile extends StatelessWidget {
         Container(
             width: screenWidth * 0.35,
             height: 60,
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration( 
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(imageurl),
+                image: NetworkImage('${Constant.imagepath}${snapshot.data![index].backDropPath}'),
               ),
             ),
             ),
